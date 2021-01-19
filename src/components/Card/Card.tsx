@@ -30,6 +30,12 @@ type Props = React.ComponentProps<typeof Surface> & {
    */
   onPress?: () => void;
   /**
+   * Mode of the Card.
+   * - `elevated` - Card with elevation, elevation defaults to 1.
+   * - `outlined` - Card with an outline.
+   */
+  mode?: 'elevated' | 'outlined';
+  /**
    * Content of the `Card`.
    */
   children: React.ReactNode;
@@ -85,6 +91,7 @@ const Card = ({
   elevation: cardElevation = 1,
   onLongPress,
   onPress,
+  mode: cardMode = 'elevated',
   children,
   style,
   theme,
@@ -131,8 +138,12 @@ const Card = ({
   );
   return (
     <Surface
-      // @ts-ignore
-      style={[{ borderRadius: roundness, elevation }, style]}
+      style={[
+        // @ts-ignore
+        { borderRadius: roundness, elevation },
+        cardMode === 'outlined' ? styles.outlined : {},
+        style,
+      ]}
       {...rest}
     >
       <TouchableWithoutFeedback
@@ -174,6 +185,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexGrow: 1,
     flexShrink: 1,
+  },
+  outlined: {
+    elevation: 0,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.12)',
   },
 });
 
